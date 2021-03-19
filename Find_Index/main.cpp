@@ -29,7 +29,7 @@ int main()
 		exit(1);
 	}
 
-	test
+	
 
 	return 0;
 }
