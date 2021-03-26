@@ -67,7 +67,8 @@ int main()
 	}
 	cout << endl;
 
-	cout << arr[i-1];
+
+	//cout <<setprecision(4)<< arr[i-1];
 
 	return 0;
 }
