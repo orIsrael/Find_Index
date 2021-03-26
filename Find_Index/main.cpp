@@ -72,11 +72,11 @@ int partition(double* arr, int start, int size)
 	return pivot;
 }
 
-double selection(double* arr, int size, int i)
-{
-	return select(arr, 0, size, i);
-	
-}
+//double selection(double* arr, int size, int i)
+//{
+//	return select(arr, 0, size, i);
+//	
+//}
 
 double select(double* arr, int left, int right, int i)
 {
@@ -137,22 +137,22 @@ int main()
 
 	cout << select(arr, 0, n, i) << endl;
 
-	///זמני ריצה
-	auto start = chrono::high_resolution_clock::now();
-	// unsync the I/O of C and C++.
-	ios_base::sync_with_stdio(false);
-	fun();// Here you put the name of the function you wish to measure
-	auto end = chrono::high_resolution_clock::now();
-	3
-		// Calculating total time taken by the program.
-		double time_taken =
-		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-	time_taken *= 1e-9;
-	ofstream myfile("Measure.txt"); // The name of the file
-	myfile << "Time taken by function <name-of-fun> is : " << fixed
-		<< time_taken << setprecision(9);
-	myfile << " sec" << endl;
-	myfile.close();
+	/////זמני ריצה
+	//auto start = chrono::high_resolution_clock::now();
+	//// unsync the I/O of C and C++.
+	//ios_base::sync_with_stdio(false);
+	//fun();// Here you put the name of the function you wish to measure
+	//auto end = chrono::high_resolution_clock::now();
+	//3
+	//	// Calculating total time taken by the program.
+	//	double time_taken =
+	//	chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	//time_taken *= 1e-9;
+	//ofstream myfile("Measure.txt"); // The name of the file
+	//myfile << "Time taken by function <name-of-fun> is : " << fixed
+	//	<< time_taken << setprecision(9);
+	//myfile << " sec" << endl;
+	//myfile.close();
 
 
 
