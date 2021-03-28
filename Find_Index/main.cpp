@@ -155,38 +155,12 @@ int main()
 	}
 	cout << endl;
 
-
-
 	//cout <<setprecision(4)<< arr[i-1];
 
 	cout << arr[i-1] << endl;
 
-	
 //	cout << selection(arr,n, i) << endl;
-<<<<<<< HEAD
 
-	cout << select(arr, 0, n, i) << endl;
-
-	/////זמני ריצה
-	//auto start = chrono::high_resolution_clock::now();
-	//// unsync the I/O of C and C++.
-	//ios_base::sync_with_stdio(false);
-	//fun();// Here you put the name of the function you wish to measure
-	//auto end = chrono::high_resolution_clock::now();
-	//3
-	//	// Calculating total time taken by the program.
-	//	double time_taken =
-	//	chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-	//time_taken *= 1e-9;
-	//ofstream myfile("Measure.txt"); // The name of the file
-	//myfile << "Time taken by function <name-of-fun> is : " << fixed
-	//	<< time_taken << setprecision(9);
-	//myfile << " sec" << endl;
-	//myfile.close();
-
-
->>>>>>> c9dc596b9bb08c90539e2ecd48c3d5234930cb38
-=======
 	cout << select(CopyArr, 0, n, i) << endl;
 
 	auto start2 = chrono::high_resolution_clock::now();
@@ -205,7 +179,7 @@ int main()
 		<< time_taken2 << setprecision(9);
 	myfile2 << " sec" << endl;
 	myfile2.close();
->>>>>>> 1599622c48f194f1f69e4beeea6c0ad0223a783f
+
 
 	return 0;
 }
