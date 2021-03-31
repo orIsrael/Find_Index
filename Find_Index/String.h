@@ -64,16 +64,17 @@ public:
 		bool isNum = ch >= '0' || ch <= '9';
 		bool isSecIter = count == 1;
 		bool isAfterPoint = false;
-
+		bool isFirstIter = count == 0;
+		bool isNegative = isFirstIter && ch == '-';
 		
 		cin >> ch;
 
-		while (ch != '\n')
+		while (ch != '\n' && ch != ' ')
 		{
 			if (logSize >= phisicalSize-1)
 				resize();
 			//vlidation chack
-			if (!isNum && ch != '\n')
+			if (!isNum && ch != '\n' && !isNegative)
 				errorMsg();
 			
 			str[logSize] = ch;
@@ -82,6 +83,7 @@ public:
 				count++;
 			cin.get(ch);
 			isAfterPoint = ch == '.';
+			count++;
 		}
 		//vlidation chack
 		if (isAfterPoint && (count > 3 || count < 1)|| ch == '\n' && count == 0)
@@ -91,6 +93,7 @@ public:
 	}
 
 	const int& getSize() { return logSize;}
+
 };
 
 #endif // !STR

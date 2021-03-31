@@ -157,11 +157,11 @@ int main()
 
 	//cout <<setprecision(4)<< arr[i-1];
 
-	cout << arr[i-1] << endl;
+	cout<<fixed<< setprecision(4) << arr[i-1] << endl;
 
 //	cout << selection(arr,n, i) << endl;
 
-	cout << select(CopyArr, 0, n, i) << endl;
+	cout << fixed << setprecision(4)<< select(CopyArr, 0, n, i) << endl;
 
 	auto start2 = chrono::high_resolution_clock::now();
 	// unsync the I/O of C and C++.

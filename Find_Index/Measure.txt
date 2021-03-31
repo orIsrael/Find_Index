@@ -1,2 +1,10 @@
 Time taken by function <name-of-fun> is : 0.000001 sec
 Time taken by function <name-of-fun> is : 0.000002 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000001 sec
+Time taken by function <name-of-fun> is : 0.000046 sec
+Time taken by function <name-of-fun> is : 0.000005 sec
