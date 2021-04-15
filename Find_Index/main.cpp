@@ -5,7 +5,21 @@
 #include "String.h"
 using namespace std;
 
-//bjhghjghjg
+const int QUINTET = 5;
+
+void bubbleSort(double* arr, int size)
+{
+	int i, j;
+
+	for (i = 0; i < size - 1; i++)
+		for (j = 0; j < size - i - 1; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				swap(arr[j], arr[j + 1]);
+			}
+		}
+}
 
 void errorMsg()
 {
@@ -75,12 +89,6 @@ int partition(double* arr, int start, int size)
 	return pivot;
 }
 
-//double selection(double* arr, int size, int i)
-//{
-//	return select(arr, 0, size, i);
-//	
-//}
-
 double select(double* arr, int left, int right, int i)
 {
 	int pivot, leftPart;
@@ -94,6 +102,65 @@ double select(double* arr, int left, int right, int i)
 	else
 		return select(arr, pivot + 1, right, i - leftPart);
 }
+
+int recQuintets(double* arr, int size)
+{
+	int i, j, mediansSize = size / QUINTET, mediansIdx = 0, lastQuintetSize = size % 5;
+	int quintetSize = 5;
+	int pivot;
+	bool isLastQuintet = false;
+	
+	if (size <= 5)
+	{
+		bubbleSort(arr, size);
+		return size / 2;
+	}
+	double tempArr[QUINTET]{ 0 };
+	double* B= new double[mediansSize];
+
+	for (i = 0; i < size; i+=5)
+	{
+		if (i == size - lastQuintetSize && lastQuintetSize!=0)
+		{
+			quintetSize = lastQuintetSize;
+			isLastQuintet = true;
+		}
+		for (j = 0; j < quintetSize; j++)
+		{
+			tempArr[j] = arr[j+(i)];
+		}
+		bubbleSort(tempArr, QUINTET);
+		if(isLastQuintet == true)
+			B[mediansIdx] = tempArr[lastQuintetSize / 2];
+		else
+		{
+			B[mediansIdx] = tempArr[QUINTET / 2];
+			mediansIdx++;
+		}
+	}
+	pivot = recQuintets(B, mediansSize);
+}
+
+
+
+double quintetsSort(double* arr, int size, int idx)
+{
+	int pivot, k;
+	pivot = recQuintets(arr, size);
+	cout << pivot << " " << arr[pivot] << endl;
+	k = partition(arr, pivot, size);
+
+	if (idx < k)
+	{
+		return quintetsSort(arr, size - k, idx);
+	}
+	if (idx > k)
+	{
+		return quintetsSort(arr+k, size, idx-k);
+	}
+	return arr[k];
+}
+
 
 
 
@@ -127,10 +194,16 @@ int main()
 		CopyArr[idx] = arr[idx];
 	}
 
+	double* CopyArr2 = new double[n];
 	for (idx = 0; idx < n; idx++)
 	{
-		cout << arr[idx] << endl;
+		CopyArr2[idx] = arr[idx];
 	}
+
+	/*for (idx = 0; idx < n; idx++)
+	{
+		cout << arr[idx] << endl;
+	}*/
 	cout << endl;
 	
 	auto start = chrono::high_resolution_clock::now();
@@ -149,13 +222,11 @@ int main()
 	myfile << " sec" << endl;
 	myfile.close();
 
-	for (idx = 0; idx < n; idx++)
+	/*for (idx = 0; idx < n; idx++)
 	{
 		cout << arr[idx] << endl;
-	}
+	}*/
 	cout << endl;
-
-	//cout <<setprecision(4)<< arr[i-1];
 
 	cout<<fixed<< setprecision(4) << arr[i-1] << endl;
 
@@ -180,6 +251,9 @@ int main()
 	myfile2 << " sec" << endl;
 	myfile2.close();
 
+	double test = quintetsSort(CopyArr2, n, i);
+	cout << "---------------" << endl;
+	cout << test << endl;
 
 	return 0;
 }
