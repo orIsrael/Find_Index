@@ -1,6 +1,7 @@
 #ifndef STR_H_
 #define STR_H_
-#include <iostream>
+#include <iostream> 
+#include <fstream>
 using namespace std;
 
 const int MIN_SIZE = 2;
@@ -66,7 +67,16 @@ public:
 		bool isAfterPoint = false;
 		bool isFirstIter = count == 0;
 		bool isNegative = isFirstIter && ch == '-';
+		bool testMode = true;
 		
+		
+		/*if (testMode)
+		{
+			ifstream& TestFile();
+			TestFile.open("testIndex.text");
+			TestFile.get(ch);
+		}*/
+	/*	else*/
 		cin >> ch;
 
 		while (ch != '\n' && ch != ' ')
@@ -81,7 +91,9 @@ public:
 			logSize++;
 			if (isAfterPoint)
 				count++;
-			cin.get(ch);
+				count++;
+		
+				cin.get(ch);
 			isAfterPoint = ch == '.';
 			count++;
 		}

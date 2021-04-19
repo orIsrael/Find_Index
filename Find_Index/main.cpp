@@ -3,9 +3,74 @@
 #include<fstream>
 #include<iomanip>
 #include "String.h"
+#include <cmath>
 using namespace std;
 
 const int QUINTET = 5;
+
+void iMeasure(void foo(double*, int), double* arr, int n)
+{
+	auto start = chrono::high_resolution_clock::now();
+	// unsync the I/O of C and C++.
+	ios_base::sync_with_stdio(false);
+	foo(arr, n);// Here you put the name of the function you wish to measure
+	auto end = chrono::high_resolution_clock::now();
+
+	// Calculating total time taken by the program.
+	double time_taken =
+		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	time_taken *= 1e-9;
+	ofstream myfile("Measure.txt", ios::app); // The name of the file
+	myfile << "Time taken by function <insertionSort> is : " << fixed
+		<< time_taken << setprecision(9);
+	myfile << " sec" << endl;
+	myfile.close();
+}
+
+
+double sMeasure(double foo(double*, int, int, int), double* arr,int left ,int right, int i)
+{
+	double val;
+	auto start = chrono::high_resolution_clock::now();
+	// unsync the I/O of C and C++.
+	ios_base::sync_with_stdio(false);
+	val = foo(arr, left, right, i);// Here you put the name of the function you wish to measure
+	auto end = chrono::high_resolution_clock::now();
+
+	// Calculating total time taken by the program.
+	double time_taken =
+		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	time_taken *= 1e-9;
+	ofstream myfile("Measure.txt", ios::app); // The name of the file
+	myfile << "Time taken by function <select> is : " << fixed
+		<< time_taken << setprecision(9);
+	myfile << " sec" << endl;
+	myfile.close();
+
+	return val;
+}
+
+double &qMeasure(double &foo(double*, int, int), double *arr, int n, int i)
+{
+	double val;
+	auto start = chrono::high_resolution_clock::now();
+	// unsync the I/O of C and C++.
+	ios_base::sync_with_stdio(false);
+	val = foo(arr, n, i);// Here you put the name of the function you wish to measure
+	auto end = chrono::high_resolution_clock::now();
+
+	// Calculating total time taken by the program.
+	double time_taken =
+		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	time_taken *= 1e-9;
+	ofstream myfile("Measure.txt", ios::app); // The name of the file
+	myfile << "Time taken by function <quintetsSort> is : " << fixed
+		<< time_taken << setprecision(9);
+	myfile << " sec" << endl;
+	myfile.close();
+
+	return val;
+}
 
 void bubbleSort(double* arr, int size)
 {
@@ -33,10 +98,11 @@ void swap(double& i, double& j)
 	j = temp;
 }
 
-void insertionSort(double *arr, int size)
+void insertionSort(double* arr, int size)
 {
 	int i = 0;
 	int j = 0;
+	for (i; i < size; i++)
 	for (i; i < size; i++)
 	{
 		j = i;
@@ -49,7 +115,7 @@ void insertionSort(double *arr, int size)
 	}
 }
 
-///////////////////////////////////////////////////
+
 
 int partition(double* arr, int start, int size)
 {
@@ -66,9 +132,7 @@ int partition(double* arr, int start, int size)
 			else
 			{
 				swap(arr[i], arr[pivot]);
-				temp = i;
-				i = pivot;
-				pivot = temp;
+				swap(i, pivot);
 				i--;
 			}
 		}
@@ -79,14 +143,42 @@ int partition(double* arr, int start, int size)
 			else
 			{
 				swap(arr[i], arr[pivot]);
-				temp = i;
-				i = pivot;
-				pivot = temp;
+				swap(i, pivot);
 				i++;
+
 			}
 		}
 	}
 	return pivot;
+}
+
+int partition2(double* arr, int left, int right, double& pivot)
+{
+	int i;
+
+	for (i = 0; i <= right; i++)
+		if (arr[i] == pivot)
+			break;
+
+	swap(arr[i], arr[0]);
+
+	while (left <= right)
+	{
+		if (arr[left] > pivot && arr[right] < pivot)
+			swap(arr[left], arr[right]);
+		else
+		{
+
+			while (arr[right] > pivot)
+				right--;
+			while (arr[left] < pivot)
+				left++;
+		}
+	}
+
+	swap(arr[right], arr[0]);
+
+	return right;
 }
 
 double select(double* arr, int left, int right, int i)
@@ -94,69 +186,69 @@ double select(double* arr, int left, int right, int i)
 	int pivot, leftPart;
 
 	pivot = partition(arr, left, right);
+	//pivot = partition2(arr, left+1, right-1, arr[0]);
 	leftPart = pivot - left + 1;
 	if (i == leftPart)
 		return arr[pivot];
 	if (i < leftPart)
-		return select(arr, left, pivot - 1, i);
+		return select(arr, left, pivot, i);
 	else
 		return select(arr, pivot + 1, right, i - leftPart);
 }
 
-int recQuintets(double* arr, int size)
+double& quintetsSort(double* arr, int size, int idx)
 {
-	int i, j, mediansSize = size / QUINTET, mediansIdx = 0, lastQuintetSize = size % 5;
+	int i, j, mediansIdx = 0, lastQuintetSize = size % 5;
 	int quintetSize = 5;
-	int pivot;
+	int numOfQuintets = ceil((double)size / 5);
 	bool isLastQuintet = false;
-	
+	bool isDividedByFive = size % 5 == 0;
+	int k;
+
 	if (size <= 5)
 	{
 		bubbleSort(arr, size);
-		return size / 2;
+		return arr[idx - 1];
 	}
 	double tempArr[QUINTET]{ 0 };
-	double* B= new double[mediansSize];
+	double* B = new double[numOfQuintets];
 
-	for (i = 0; i < size; i+=5)
+	for (i = 0; i < numOfQuintets; i++)
 	{
-		if (i == size - lastQuintetSize && lastQuintetSize!=0)
+		if (i == numOfQuintets - 1)
 		{
-			quintetSize = lastQuintetSize;
 			isLastQuintet = true;
+			if (lastQuintetSize != 0)
+				quintetSize = lastQuintetSize;
 		}
 		for (j = 0; j < quintetSize; j++)
 		{
-			tempArr[j] = arr[j+(i)];
+			tempArr[j] = arr[j + (i * QUINTET)];
 		}
-		bubbleSort(tempArr, QUINTET);
-		if(isLastQuintet == true)
+		bubbleSort(tempArr, quintetSize);
+		if (isLastQuintet == true && !isDividedByFive)
 			B[mediansIdx] = tempArr[lastQuintetSize / 2];
+		else if (isLastQuintet == true)
+			B[mediansIdx] = tempArr[quintetSize / 2];
 		else
 		{
-			B[mediansIdx] = tempArr[QUINTET / 2];
+			B[mediansIdx] = tempArr[quintetSize / 2];
 			mediansIdx++;
 		}
 	}
-	pivot = recQuintets(B, mediansSize);
-}
+	//double pivot = select(B, 0, mediansSize, (mediansSize / 2)+1);// the median is the the member which the n/2+1 in size
 
+	double pivot = quintetsSort(B, numOfQuintets, numOfQuintets / 2 + 1);
 
+	k = partition2(arr, 1, size - 1, pivot);
 
-double quintetsSort(double* arr, int size, int idx)
-{
-	int pivot, k;
-	pivot = recQuintets(arr, size);
-	cout << pivot << " " << arr[pivot] << endl;
-	k = partition(arr, pivot, size);
-
-	if (idx < k)
+	if (idx < k + 1)
 	{
-		return quintetsSort(arr, size - k, idx);
+		return quintetsSort(arr, k, idx);
 	}
-	if (idx > k)
+	if (idx > k + 1)
 	{
-		return quintetsSort(arr+k, size, idx-k);
+		return quintetsSort(arr + k + 1, size - k - 1, idx - k - 1);
 	}
 	return arr[k];
 }
@@ -164,23 +256,28 @@ double quintetsSort(double* arr, int size, int idx)
 
 
 
+
+
 int main()
 {
 	int n, i, j, counter, idx;
-	double temp;
+	double temp, qVal, sVal;
 	char ch;
 
 	cout << "Please enter the number of numbers you would like to enter and after that," <<
 		" enter the index you would like to find" << endl;
 	cin >> n >> i;
 
-	cout << "Please enter the numbers from which you would like to find the index" << endl;
-	
+	if (i > n || i <= 0)
+		errorMsg();
 
-	double *arr = new double[n];
-	
+	cout << "Please enter the numbers from which you would like to find the index" << endl;
+
+
+	double* arr = new double[n];
+
 	counter = idx = 0;
-	for(idx = 0; idx < n; idx++)
+	for (idx = 0; idx < n; idx++)
 	{
 		String str;
 		str.getNum();
@@ -200,63 +297,18 @@ int main()
 		CopyArr2[idx] = arr[idx];
 	}
 
-	/*for (idx = 0; idx < n; idx++)
-	{
-		cout << arr[idx] << endl;
-	}*/
-	cout << endl;
-	
-	auto start = chrono::high_resolution_clock::now();
-	// unsync the I/O of C and C++.
-	ios_base::sync_with_stdio(false);
-	insertionSort(arr, n);// Here you put the name of the function you wish to measure
-	auto end = chrono::high_resolution_clock::now();
+	iMeasure(insertionSort, arr, n);
 
-	// Calculating total time taken by the program.
-	double time_taken =
-		chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-	time_taken *= 1e-9;
-	ofstream myfile("Measure.txt", ios::app); // The name of the file
-	myfile << "Time taken by function <name-of-fun> is : " << fixed
-		<< time_taken << setprecision(9);
-	myfile << " sec" << endl;
-	myfile.close();
+	cout << "Insertion sort i'th element: " << fixed << setprecision(4) << arr[i - 1] << endl;
 
-	/*for (idx = 0; idx < n; idx++)
-	{
-		cout << arr[idx] << endl;
-	}*/
-	cout << endl;
+	//	cout << selection(arr,n, i) << endl;
 
-	cout<<fixed<< setprecision(4) << arr[i-1] << endl;
+	sVal = sMeasure(select, CopyArr, 0, n, i);
 
-//	cout << selection(arr,n, i) << endl;
+	cout << "Selection i'th element: " << fixed << setprecision(4) << sVal << endl;
 
-	cout << fixed << setprecision(4)<< select(CopyArr, 0, n, i) << endl;
-
-	auto start2 = chrono::high_resolution_clock::now();
-	// unsync the I/O of C and C++.
-	ios_base::sync_with_stdio(false);
-// Here you put the name of the function you wish to measure
-	select(arr, 0, n, i);
-	auto end2 = chrono::high_resolution_clock::now();
-	
-		// Calculating total time taken by the program.
-		double time_taken2 =
-		chrono::duration_cast<chrono::nanoseconds>(end2 - start2).count();
-	time_taken2 *= 1e-9;
-	ofstream myfile2("Measure.txt",ios::app); // The name of the file
-	myfile2 << "Time taken by function <name-of-fun> is : " << fixed
-		<< time_taken2 << setprecision(9);
-	myfile2 << " sec" << endl;
-	myfile2.close();
-
-	double test = quintetsSort(CopyArr2, n, i);
-	cout << "---------------" << endl;
-	cout << test << endl;
+	qVal = qMeasure(quintetsSort, CopyArr2, n, i);
+	cout << "Quintuplet algorithm i'th element: " << fixed << setprecision(4) << qVal << endl;
 
 	return 0;
 }
-
-
-
