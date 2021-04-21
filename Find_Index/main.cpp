@@ -3,6 +3,7 @@
 #include<fstream>
 #include<iomanip>
 #include "String.h"
+#include"Arry.h"
 #include <cmath>
 using namespace std;
 
@@ -28,7 +29,7 @@ void iMeasure(void foo(double*, int), double* arr, int n)
 }
 
 
-double sMeasure(double foo(double*, int, int, int), double* arr,int left ,int right, int i)
+double sMeasure(double foo(double*, int, int, int), double* arr, int left, int right, int i)
 {
 	double val;
 	auto start = chrono::high_resolution_clock::now();
@@ -50,7 +51,7 @@ double sMeasure(double foo(double*, int, int, int), double* arr,int left ,int ri
 	return val;
 }
 
-double &qMeasure(double &foo(double*, int, int), double *arr, int n, int i)
+double& qMeasure(double& foo(double*, int, int), double* arr, int n, int i)
 {
 	double val;
 	auto start = chrono::high_resolution_clock::now();
@@ -72,19 +73,7 @@ double &qMeasure(double &foo(double*, int, int), double *arr, int n, int i)
 	return val;
 }
 
-void bubbleSort(double* arr, int size)
-{
-	int i, j;
 
-	for (i = 0; i < size - 1; i++)
-		for (j = 0; j < size - i - 1; j++)
-		{
-			if (arr[j] > arr[j + 1])
-			{
-				swap(arr[j], arr[j + 1]);
-			}
-		}
-}
 
 void errorMsg()
 {
@@ -102,17 +91,15 @@ void insertionSort(double* arr, int size)
 {
 	int i = 0;
 	int j = 0;
-	for (i; i < size; i++)
-	for (i; i < size; i++)
-	{
-		j = i;
-		while (j > 0 && arr[j - 1] > arr[j])
+		for (i; i < size; i++)
 		{
-			swap(arr[j], arr[j - 1]);
-			j--;
+			j = i;
+			while (j > 0 && arr[j - 1] > arr[j])
+			{
+				swap(arr[j], arr[j - 1]);
+				j--;
+			}
 		}
-
-	}
 }
 
 
@@ -164,7 +151,7 @@ int partition2(double* arr, int left, int right, double& pivot)
 
 	while (left <= right)
 	{
-		if (arr[left] > pivot && arr[right] < pivot)
+		if (arr[left] > pivot&& arr[right] < pivot)
 			swap(arr[left], arr[right]);
 		else
 		{
@@ -263,6 +250,7 @@ int main()
 	int n, i, j, counter, idx;
 	double temp, qVal, sVal;
 	char ch;
+	
 
 	cout << "Please enter the number of numbers you would like to enter and after that," <<
 		" enter the index you would like to find" << endl;
@@ -272,9 +260,6 @@ int main()
 		errorMsg();
 
 	cout << "Please enter the numbers from which you would like to find the index" << endl;
-
-
-	double* arr = new double[n];
 
 	counter = idx = 0;
 	for (idx = 0; idx < n; idx++)
